@@ -6,7 +6,6 @@ const { prompts } = require("inquirer");
 
 const connection = mysql.createConnection({
     host: "localhost",
-    port: 3306,
     user: "root",
     password: "Meadows2020!@#",
     database: "kdc_db"
