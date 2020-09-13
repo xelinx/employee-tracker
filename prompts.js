@@ -1,10 +1,12 @@
 //Dependencies
-const inquirer = require("inquirer");
-const mysql = require("mysql");
+//const inquirer = require("inquirer");
+//const mysql = require("mysql");
+//var connection = require('./db/connection');
 
 //Question Prompt
-function viewAllTitles(
-    inquirer.prompt({
+function prompts() {
+    inquirer
+    .prompt({
       name: "action",
       type: "list",
       message: "MAIN MENU",
@@ -21,7 +23,39 @@ function viewAllTitles(
         //"Delete department",
         //"Delete role",
         //"Delete employee",
-        //"View department budgets"
+        //"View department budgets",
+        "Exit"
       ]
-    }).then()
-)
+    }).then(function(response) {
+            switch (response.action) {
+                case "View All Employees":
+                    viewAllEmployee();
+                    break;
+                case "View All Employees By Department":
+                    viewAllEmployeeByDep();
+                    break;
+                case "View All Employees By Manager":
+                    viewAllEmployeeByManager();
+                    break;
+                case "View All Employees By Role":
+                    viewAllEmployeeByRole();
+                    break;
+                case "Add Employee":
+                    addEmployee();
+                    break;
+                case "Add Role":
+                    addRole();
+                    break;   
+                case "Add Department":
+                    addDepartment();
+                    break;                                        
+                case "Update Employee Role":
+                    updateEmployeeRole();
+                    break;
+                case "Exit":
+                    process.exit();
+                default:
+                    break;
+            }
+        })                    
+}        
