@@ -1,4 +1,8 @@
---Deparment--
+SELECT * FROM department;
+SELECT * FROM role;
+SELECT * FROM employee;
+
+--Department--
 
 INSERT INTO department (id, name)
 VALUES (1, "Sales");
