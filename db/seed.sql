@@ -30,6 +30,7 @@ INSERT INTO role (id, title, salary, department_id)
 VALUES (6, "Manager", 65000, 5);
 
 --Employee--
+SET FOREIGN_KEY_CHECKS=0;
 INSERT INTO employee (id, first_name, last_name, role_id, manager_id)
 values (6, "Dokja", "Kim", 6, null); 
 INSERT INTO employee (id, first_name, last_name, role_id, manager_id)
@@ -42,3 +43,4 @@ INSERT INTO employee (id, first_name, last_name, role_id, manager_id)
 values (1, "Hyungsung", "Lee", 2, 1);
 INSERT INTO employee (id, first_name, last_name, role_id, manager_id)
 values (4, "Sangah", "Yoo", 5, 6);
+SET FOREIGN_KEY_CHECKS=1;

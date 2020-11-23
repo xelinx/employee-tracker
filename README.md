@@ -1,5 +1,6 @@
 # employee-tracker
 
+Building an interface using node, inquirer, and MySQL
 
 
 ## Table of Contents

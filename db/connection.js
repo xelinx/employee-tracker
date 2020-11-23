@@ -2,13 +2,12 @@
 
 const util = require("util");
 const mysql = require("mysql");
-const { prompts } = require("inquirer");
 
 const connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
     user: "root",
-    password: "",
+    password: "Meadows2020!@#",
     database: "kdc_db"
 });
 
