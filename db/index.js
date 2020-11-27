@@ -12,127 +12,111 @@ class DB {
   viewAllEmployees() {
     return this.connection.query(
       `
-        SELECT
-            e1.id AS ID,
-            e1.first_name AS First_Name,
-            e1.last_name AS Last_Name,
-            roles.title AS Role,
-            CONCAT(e2.first_name, ' ', e2.last_name) AS Manager_Name,
-            e1.manager_id AS Manager_ID
-        FROM
-            employees e1
-        LEFT JOIN
-            roles ON e1.role_id = roles.id
-        LEFT JOIN
-            employees e2 ON e1.manager_id = e2.id
-        ORDER BY
-            e1.id;
-          `
+      SELECT
+        employee.id, 
+        employee.first_name, 
+        employee.last_name, 
+        role.title, 
+        department.name AS department, 
+        role.salary, 
+        CONCAT(manager.first_name, ' ', manager.last_name) AS manager 
+      FROM 
+        employee 
+      LEFT JOIN 
+        role on employee.role_id = role.id 
+      LEFT JOIN 
+        department on role.department_id = department.id 
+      LEFT JOIN 
+        employee manager on manager.id = employee.manager_id
+
+      `
     );
   }
 
   viewAllDepartments() {
     return this.connection.query(
       `
-          SELECT
-              departments.id,
-              departments.name AS Department
-          FROM
-              departments
-          ORDER BY
-              departments.id;
-          `
+      SELECT
+        department.id, 
+        department.name, 
+      SUM(role.salary) AS utilized_budget 
+      FROM 
+        employee 
+      LEFT JOIN 
+        role on employee.role_id = role.id 
+      LEFT JOIN 
+        department on role.department_id = department.id 
+      GROUP BY 
+        department.id, 
+        department.name
+
+      `
     );
   }
 
   viewAllRoles() {
     return this.connection.query(
       `
-        SELECT
-            roles.id,
-            roles.title AS Role,
-            roles.salary AS Salary,
-            departments.name AS Department
-        FROM
-            roles
-        LEFT JOIN
-            departments ON roles.department_id = departments.id
-        ORDER BY
-            roles.id;
-          `
-    );
-  };
+      SELECT
+        role.id, 
+        role.title, 
+        department.name AS department, 
+        role.salary 
+      FROM 
+        role 
+      LEFT JOIN 
+        department on role.department_id = department.id
 
-  viewEmployee(id) {
-    return this.connection.query(
-      `
-            SELECT
-            employees.id,
-            employees.first_name,
-            employees.last_name,
-            employees.role_id,
-            employees.manager_id
-        FROM
-            employees
-            WHERE
-            employees.id = ?;
-            `, [id]
+        `
     );
   };
 
 
   // POST METHODS
-  addDepartment(dept) {
+  addDepartment(department) {
     return this.connection.query(
       `
-            INSERT INTO 
-                departments (name)
-            VALUES (?);
-            `, [dept]
+      INSERT INTO 
+          department
+      SET 
+        ?
+      `, department
     );
   };
 
-  addRole(title, salary, department_id) {
+  addRole(role) {
     return this.connection.query(
       `
-            INSERT INTO 
-                roles (title, salary, department_id)
-            VALUES (?, ?, ?);
-            `, [
-      title,
-      salary,
-      department_id
-    ]
-
+      INSERT INTO 
+          role
+      SET 
+        ?
+      `, role
     );
   };
 
-  addEmployee(first_name, last_name, role_id, manager_id) {
+  addEmployee(employee) {
     return this.connection.query(
-      `INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?);`, [first_name, last_name, role_id, manager_id]
+      `
+      INSERT INTO 
+          role
+      SET 
+        ?
+      `, employee    
     );
   };
 
 
   // PUT METHOD
-  updateEmployee(id, first_name, last_name, role_id, manager_id) {
+  updateEmployee(employeeId, roleId) {
     return this.connection.query(
       `
-            UPDATE 
-                employees
-            SET ?
-            WHERE ?;
-            `, [
-      {
-        first_name: first_name,
-        last_name: last_name,
-        role_id: role_id,
-        manager_id: manager_id
-      },
-      {
-        id: id
-      }
-    ]
+      UPDATE 
+          employees
+      SET 
+        role_id = ?
+      WHERE id = ?
+      `, [roleId, employeeId]
     );
   };
 
